@@ -1,0 +1,49 @@
+FROM php:7.4.4-cli-alpine
+
+MAINTAINER Samusevich Alexander <archer.developer@gmail.com>
+
+ARG ENVIRONMENT
+
+# Packages
+RUN apk update --update-cache && \
+    apk upgrade --available && \
+    apk --no-cache add \
+       openssh \
+       zlib-dev \
+       libzip-dev \
+       libpng-dev \
+       libjpeg-turbo-dev \
+       freetype-dev \
+       unzip \
+       git \
+       nano \
+       htop
+
+# Install basic php extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install -j$(nproc) \
+    gd \
+    opcache \
+    pdo_mysql \
+    pcntl \
+    calendar \
+    bcmath \
+    zip
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN composer --version
+
+ADD ./php/php.ini-${ENVIRONMENT} /usr/local/etc/php/php.ini
+
+STOPSIGNAL SIGTERM
+
+# Replace default entrypoint and cmd
+CMD []
+
+ADD ./entrypoint.cmd.sh /entrypoint.cmd.sh
+RUN chmod +x /entrypoint.cmd.sh
+
+WORKDIR /var/www/app
+
+ENTRYPOINT ["/entrypoint.sh"]
