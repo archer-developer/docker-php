@@ -45,5 +45,3 @@ ADD ./entrypoint.cmd.sh /entrypoint.cmd.sh
 RUN chmod +x /entrypoint.cmd.sh
 
 WORKDIR /var/www/app
-
-ENTRYPOINT ["/entrypoint.sh"]
