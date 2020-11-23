@@ -1,8 +1,10 @@
-FROM php:7.4.4-cli-alpine
+ARG PHP_VERSION
+
+FROM php:${PHP_VERSION}-cli-alpine
 
 MAINTAINER Samusevich Alexander <archer.developer@gmail.com>
 
-ARG ENVIRONMENT
+ARG ENVIRONMENT=development
 
 # Packages
 RUN apk update --update-cache && \
