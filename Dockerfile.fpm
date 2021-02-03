@@ -21,6 +21,7 @@ RUN apk update --update-cache && \
        libjpeg-turbo-dev \
        freetype-dev \
        oniguruma-dev \
+       libxml2-dev \
        unzip \
        nginx \
        runit \
@@ -37,7 +38,6 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     gd \
     opcache \
     pdo_mysql \
-    mbstring \
     xml \
     pcntl \
     calendar \
