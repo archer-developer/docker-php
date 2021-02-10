@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 
 docker build -f Dockerfile.fpm \
-  --build-arg PHP_VERSION=7.4.4 \
-  -t mgdteam/php:7.4.4-fpm-nginx .
+  --build-arg PHP_VERSION=7.4 \
+  -t mgdteam/php:7.4-fpm-nginx .
 
 docker build -f Dockerfile.cli \
-  --build-arg PHP_VERSION=7.4.4 \
-  -t mgdteam/php:7.4.4-cli .
+  --build-arg PHP_VERSION=7.4 \
+  -t mgdteam/php:7.4-cli .
 
 docker build -f Dockerfile.fpm \
   --build-arg PHP_VERSION=8.0 \
