@@ -1,32 +1,12 @@
 #!/usr/bin/env sh
 
-docker build -f Dockerfile.fpm \
-  --build-arg PHP_VERSION=7.4 \
-  -t mgdteam/php:7.4-fpm-nginx .
+docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile.fpm \
+  --build-arg PHP_VERSION=7.2 \
+  -t mgdteam/php:7.2-fpm-nginx .
 
-docker build -f Dockerfile.cli \
-  --build-arg PHP_VERSION=7.4 \
-  -t mgdteam/php:7.4-cli .
+docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile.cli \
+  --build-arg PHP_VERSION=7.2 \
+  -t mgdteam/php:7.2-cli .
 
-docker build -f Dockerfile.fpm \
-  --build-arg PHP_VERSION=8.0 \
-  -t mgdteam/php:8.0-fpm-nginx .
-
-docker build -f Dockerfile.cli \
-  --build-arg PHP_VERSION=8.0 \
-  -t mgdteam/php:8.0-cli .
-
-docker build -f Dockerfile.fpm \
-  --build-arg PHP_VERSION=8.1 \
-  -t mgdteam/php:8.1-fpm-nginx .
-
-docker build -f Dockerfile.cli \
-  --build-arg PHP_VERSION=8.1 \
-  -t mgdteam/php:8.1-cli .
-
-docker push mgdteam/php:7.4-fpm-nginx
-docker push mgdteam/php:7.4-cli
-docker push mgdteam/php:8.0-fpm-nginx
-docker push mgdteam/php:8.0-cli
-docker push mgdteam/php:8.1-fpm-nginx
-docker push mgdteam/php:8.1-cli
+docker push mgdteam/php:7.2-fpm-nginx
+docker push mgdteam/php:7.2-cli
