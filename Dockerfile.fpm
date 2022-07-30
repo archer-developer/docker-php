@@ -30,8 +30,8 @@ RUN apk update --update-cache && \
     && mkdir -p ${SERVICE_AVAILABLE_DIR} ${SERVICE_ENABLED_DIR}
 
 # Fix work iconv library with alpine. Use older version 1.15.r2
-RUN wget http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/gnu-libiconv-1.15-r2.apk && apk add gnu-libiconv-1.15-r2.apk
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+#RUN wget http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/gnu-libiconv-1.15-r2.apk && apk add gnu-libiconv-1.15-r2.apk
+#ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Install basic php extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
