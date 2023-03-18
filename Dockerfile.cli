@@ -1,6 +1,7 @@
 ARG PHP_VERSION
+ARG ALPINE_VERSION=3.16
 
-FROM php:${PHP_VERSION}-cli-alpine
+FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION}
 
 MAINTAINER Samusevich Alexander <archer.developer@gmail.com>
 
@@ -11,6 +12,7 @@ ARG COMPOSER_VERSION=2.3.4
 RUN apk update --update-cache && \
     apk upgrade --available && \
     apk --no-cache add \
+       bash \
        openssh \
        icu-dev \
        zlib-dev \
@@ -24,10 +26,6 @@ RUN apk update --update-cache && \
        git \
        nano \
        htop
-
-# Fix work iconv library with alpine. Use older version 1.15.r2
-#RUN wget http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/gnu-libiconv-1.15-r2.apk && apk add gnu-libiconv-1.15-r2.apk
-#ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Install basic php extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
@@ -46,7 +44,10 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION}
 RUN composer --version
 
-ADD ./php/php.ini-${ENVIRONMENT} /usr/local/etc/php/php.ini
+# Use the default configuration according to environment
+RUN mv "$PHP_INI_DIR/php.ini-${ENVIRONMENT}" "$PHP_INI_DIR/php.ini"
+# Customize the default configuration according to environment
+ADD ./php/php.ini-${ENVIRONMENT} "$PHP_INI_DIR/conf.d/custom.ini"
 
 STOPSIGNAL SIGTERM
 
