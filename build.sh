@@ -98,3 +98,24 @@ if [[ "$phpVersion" = "8.3" ]] || [[ -z "$phpVersion" ]]
       -t mgdteam/php:8.3-cli . \
       --push
 fi
+
+if [[ "$phpVersion" = "8.4.0alpha2" ]] || [[ -z "$phpVersion" ]]
+	then
+    docker buildx build \
+      --platform ${PLATFORMS} \
+      -f Dockerfile.fpm \
+      --build-arg PHP_VERSION=8.4.0alpha2 \
+      --build-arg ALPINE_VERSION=3.20 \
+      --build-arg COMPOSER_VERSION=2.7.7 \
+      -t mgdteam/php:8.4.0alpha2-fpm-nginx . \
+      --push
+
+    docker buildx build \
+      --platform ${PLATFORMS} \
+      -f Dockerfile.cli \
+      --build-arg PHP_VERSION=8.4.0alpha2 \
+      --build-arg ALPINE_VERSION=3.20 \
+      --build-arg COMPOSER_VERSION=2.7.7 \
+      -t mgdteam/php:8.4.0alpha2-cli . \
+      --push
+fi
