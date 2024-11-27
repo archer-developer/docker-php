@@ -1,121 +1,53 @@
 #!/usr/bin/env sh
 
 PLATFORMS=linux/amd64,linux/arm64,linux/arm/v7
+IMAGE_NAME=mgdteam/php
 
-phpVersion="$1"
+PHP_VERSION="$1"
 
-if [[ "$phpVersion" = "7.4" ]] || [[ -z "$phpVersion" ]]
-	then
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.fpm \
-      --build-arg PHP_VERSION=7.4 \
-      -t mgdteam/php:7.4-fpm-nginx . \
-      --push
+COMPOSER_VERSION=2.7.8
 
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.cli \
-      --build-arg PHP_VERSION=7.4 \
-      -t mgdteam/php:7.4-cli . \
-      --push
-fi
+# Select a build preset with specific Alpine and Composer version
+case $PHP_VERSION in
 
-if [[ "$phpVersion" = "8.0" ]] || [[ -z "$phpVersion" ]]
-	then
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.fpm \
-      --build-arg PHP_VERSION=8.0 \
-      -t mgdteam/php:8.0-fpm-nginx . \
-      --push
+    "8.0")
+        ALPINE_VERSION=3.16
+        ;;
+    "8.1")
+        ALPINE_VERSION=3.20
+        ;;
+    "8.2")
+        ALPINE_VERSION=3.20
+        ;;
+    "8.3")
+        ALPINE_VERSION=3.20
+        ;;
+    "8.4")
+        ALPINE_VERSION=3.20
+        ;;
+esac
 
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.cli \
-      --build-arg PHP_VERSION=8.0 \
-      -t mgdteam/php:8.0-cli . \
-      --push
-fi
+echo "\n================================="
+echo "PHP version: $PHP_VERSION"
+echo "Build platforms: $PLATFORMS"
+echo "Alpine version: $ALPINE_VERSION"
+echo "Composer version: $COMPOSER_VERSION"
+echo "=================================\n"
 
-if [[ "$phpVersion" = "8.1" ]] || [[ -z "$phpVersion" ]]
-	then
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.fpm \
-      --build-arg PHP_VERSION=8.1 \
-      --build-arg ALPINE_VERSION=3.17 \
-      -t mgdteam/php:8.1-fpm-nginx . \
-      --push
+docker buildx build \
+  --platform ${PLATFORMS} \
+  -f Dockerfile.fpm \
+  --build-arg PHP_VERSION=${PHP_VERSION} \
+  --build-arg ALPINE_VERSION=${ALPINE_VERSION} \
+  --build-arg COMPOSER_VERSION=${COMPOSER_VERSION} \
+  -t ${IMAGE_NAME}:${PHP_VERSION}-fpm-nginx . \
+  --push
 
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.cli \
-      --build-arg PHP_VERSION=8.1 \
-      --build-arg ALPINE_VERSION=3.17 \
-      -t mgdteam/php:8.1-cli . \
-      --push
-fi
-
-if [[ "$phpVersion" = "8.2" ]] || [[ -z "$phpVersion" ]]
-	then
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.fpm \
-      --build-arg PHP_VERSION=8.2 \
-      --build-arg ALPINE_VERSION=3.17 \
-      --build-arg COMPOSER_VERSION=2.5.4 \
-      -t mgdteam/php:8.2-fpm-nginx . \
-      --push
-
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.cli \
-      --build-arg PHP_VERSION=8.2 \
-      --build-arg ALPINE_VERSION=3.17 \
-      --build-arg COMPOSER_VERSION=2.5.4 \
-      -t mgdteam/php:8.2-cli . \
-      --push
-fi
-
-if [[ "$phpVersion" = "8.3" ]] || [[ -z "$phpVersion" ]]
-	then
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.fpm \
-      --build-arg PHP_VERSION=8.3 \
-      --build-arg ALPINE_VERSION=3.19 \
-      --build-arg COMPOSER_VERSION=2.7.7 \
-      -t mgdteam/php:8.3-fpm-nginx . \
-      --push
-
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.cli \
-      --build-arg PHP_VERSION=8.3 \
-      --build-arg ALPINE_VERSION=3.19 \
-      --build-arg COMPOSER_VERSION=2.7.7 \
-      -t mgdteam/php:8.3-cli . \
-      --push
-fi
-
-if [[ "$phpVersion" = "8.4.0alpha2" ]] || [[ -z "$phpVersion" ]]
-	then
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.fpm \
-      --build-arg PHP_VERSION=8.4.0alpha2 \
-      --build-arg ALPINE_VERSION=3.20 \
-      --build-arg COMPOSER_VERSION=2.7.7 \
-      -t mgdteam/php:8.4.0alpha2-fpm-nginx . \
-      --push
-
-    docker buildx build \
-      --platform ${PLATFORMS} \
-      -f Dockerfile.cli \
-      --build-arg PHP_VERSION=8.4.0alpha2 \
-      --build-arg ALPINE_VERSION=3.20 \
-      --build-arg COMPOSER_VERSION=2.7.7 \
-      -t mgdteam/php:8.4.0alpha2-cli . \
-      --push
-fi
+docker buildx build \
+  --platform ${PLATFORMS} \
+  -f Dockerfile.cli \
+  --build-arg PHP_VERSION=${PHP_VERSION} \
+  --build-arg ALPINE_VERSION=${ALPINE_VERSION} \
+  --build-arg COMPOSER_VERSION=${COMPOSER_VERSION} \
+  -t ${IMAGE_NAME}:${PHP_VERSION}-cli . \
+  --push
