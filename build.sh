@@ -5,7 +5,7 @@ IMAGE_NAME=mgdteam/php
 
 PHP_VERSION="$1"
 
-COMPOSER_VERSION=2.7.8
+COMPOSER_VERSION=2.8.3
 
 # Select a build preset with specific Alpine and Composer version
 case $PHP_VERSION in
