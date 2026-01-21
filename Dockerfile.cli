@@ -3,7 +3,7 @@ ARG ALPINE_VERSION
 
 FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION}
 
-MAINTAINER Samusevich Alexander <archer.developer@gmail.com>
+LABEL maintainer="Samusevich Alexander <archer.developer@gmail.com>"
 
 ARG ENVIRONMENT=development
 ARG COMPOSER_VERSION

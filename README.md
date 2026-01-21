@@ -11,11 +11,9 @@ Usage
 To run this docker-compose below you should create .env file and
 create `APP_HTTP_PORT` and `APP_HTTPS_PORT` variables.
     
-    version: '3.7'
-    
     services:
         app:
-            image: mgdteam/php:8.2-fpm-nginx
+            image: mgdteam/php:8.4-fpm-nginx
             ports:
                 - 127.0.0.1:${APP_HTTP_PORT}:80
                 - 127.0.0.1:${APP_HTTPS_PORT}:443
@@ -23,7 +21,7 @@ create `APP_HTTP_PORT` and `APP_HTTPS_PORT` variables.
                 - ./app:/var/www/app:cached
             
         queue-worker:
-            image: mgdteam/php:8.2-cli
+            image: mgdteam/php:8.4-cli
             volumes:
                 - ./app:/var/www/app:cached
             # Command can be run in container periodically
@@ -37,7 +35,7 @@ Customize PHP and Nginx configuration
 To configure PHP and Nginx you should create new Dockerfile and override config files to your own. 
 Dockerfile example:
 
-    FROM mgdteam/php:8.2-fpm-nginx
+    FROM mgdteam/php:8.4-fpm-nginx
     
     # Change php configuration
     ADD ./php/php.ini "$PHP_INI_DIR/conf.d/my-custom.ini"
@@ -70,3 +68,17 @@ Copy this script during Dockerfile building to the predefined runit services fol
 
 
 So the run script will be demonized and started in a separate process during container running.  
+
+How to build/push an image
+---------------------------------------------
+
+Docker CLI with [buildx](https://github.com/docker/buildx) plugin should be installed to build a Docker image. 
+There is a build script tu build and push a new Docker image to the registry:
+
+    ./build.sh <PHP_VERSION> <ENVIRONMENT>
+
+Available PHP versions: `8.0`, `8.1`, `8.2`, `8.3`, `8.4`, `8.5`.
+
+Available environments: `development`, `production`.
+The environment defines a PHP configuration which should be used. This configuration contains performance optimizations
+according to [Symfony docs](https://symfony.com/doc/current/performance.html).

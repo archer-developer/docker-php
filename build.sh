@@ -20,10 +20,16 @@ case $PHP_VERSION in
         ALPINE_VERSION=3.20
         ;;
     "8.3")
-        ALPINE_VERSION=3.20
+        ALPINE_VERSION=3.22
+        COMPOSER_VERSION=2.9.3
         ;;
     "8.4")
-        ALPINE_VERSION=3.20
+        ALPINE_VERSION=3.23
+        COMPOSER_VERSION=2.9.3
+        ;;
+    "8.5")
+        ALPINE_VERSION=3.23
+        COMPOSER_VERSION=2.9.3
         ;;
 esac
 
@@ -40,7 +46,7 @@ docker buildx build \
   --build-arg PHP_VERSION=${PHP_VERSION} \
   --build-arg ALPINE_VERSION=${ALPINE_VERSION} \
   --build-arg COMPOSER_VERSION=${COMPOSER_VERSION} \
-  -t ${IMAGE_NAME}:${PHP_VERSION}-fpm-nginx . \
+  -t ${IMAGE_NAME}:${PHP_VERSION}-alpine${ALPINE_VERSION}-fpm-nginx . \
   --push
 
 docker buildx build \
@@ -49,5 +55,5 @@ docker buildx build \
   --build-arg PHP_VERSION=${PHP_VERSION} \
   --build-arg ALPINE_VERSION=${ALPINE_VERSION} \
   --build-arg COMPOSER_VERSION=${COMPOSER_VERSION} \
-  -t ${IMAGE_NAME}:${PHP_VERSION}-cli . \
+  -t ${IMAGE_NAME}:${PHP_VERSION}-alpine${ALPINE_VERSION}-cli . \
   --push
