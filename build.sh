@@ -40,7 +40,7 @@ echo "Alpine version: $ALPINE_VERSION"
 echo "Composer version: $COMPOSER_VERSION"
 echo "=================================\n"
 
-docker buildx build \
+docker buildx build --no-cache \
   --platform ${PLATFORMS} \
   -f Dockerfile.fpm \
   --build-arg PHP_VERSION=${PHP_VERSION} \
@@ -49,7 +49,7 @@ docker buildx build \
   -t ${IMAGE_NAME}:${PHP_VERSION}-alpine${ALPINE_VERSION}-fpm-nginx . \
   --push
 
-docker buildx build \
+docker buildx build --no-cache \
   --platform ${PLATFORMS} \
   -f Dockerfile.cli \
   --build-arg PHP_VERSION=${PHP_VERSION} \
