@@ -5,7 +5,7 @@ IMAGE_NAME=mgdteam/php
 
 PHP_VERSION="$1"
 
-COMPOSER_VERSION=2.8.3
+COMPOSER_VERSION=2.11.2
 
 # Select a build preset with specific Alpine and Composer version
 case $PHP_VERSION in
@@ -21,15 +21,15 @@ case $PHP_VERSION in
         ;;
     "8.3")
         ALPINE_VERSION=3.22
-        COMPOSER_VERSION=2.9.3
         ;;
     "8.4")
-        ALPINE_VERSION=3.23
-        COMPOSER_VERSION=2.9.3
+        ALPINE_VERSION=3.24
         ;;
     "8.5")
-        ALPINE_VERSION=3.23
-        COMPOSER_VERSION=2.9.3
+        ALPINE_VERSION=3.24
+        ;;
+    "8.6")
+        ALPINE_VERSION=3.24
         ;;
 esac
 
